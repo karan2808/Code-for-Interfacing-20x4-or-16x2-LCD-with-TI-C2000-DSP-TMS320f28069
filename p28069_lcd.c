@@ -194,7 +194,7 @@ void DisplayLCD(char LineNumber,char *Data)
 	    {   //third line
 	        WriteCommandLCD(0x94);      //Select the third line
 	    }
-	else if(LineNumber ==3)
+	else if(LineNumber ==4)
 	        {   //fourth line
 	            WriteCommandLCD(0xD4);      //Select the fourth line
 	        }
