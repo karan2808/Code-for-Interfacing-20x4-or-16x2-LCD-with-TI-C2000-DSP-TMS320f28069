@@ -20,14 +20,14 @@
 
 #include "p28069_lcd.h"
 
-void WriteCommandLCD(unsigned char CommandByte);
-void WriteDataLCD(unsigned char DataByte);
+void WriteCommand(unsigned char CommandByte);
+void WriteData(unsigned char DataByte);
 void LCDDelay(void);
 void LCDDelay1600(void);
 void SendByte(unsigned char Value);
 
 // Initialize LCD
-void InitializeLCD(void)
+void Initialize(void)
 {
 	int i = 0;
     //Set Enable pin High
@@ -37,30 +37,30 @@ void InitializeLCD(void)
         LCDDelay1600();
     }
 
-	WriteCommandLCD(0x38);			//Command to select 8 bit interface
+	WriteCommand(0x38);			//Command to select 8 bit interface
 	LCDDelay1600();
 
-	WriteCommandLCD(0x38);			//Command to select 8 bit interface
+	WriteCommand(0x38);			//Command to select 8 bit interface
 	LCDDelay();				        //Small delay
 
-	WriteCommandLCD(0x38);			//Command to select 8 bit interface
+	WriteCommand(0x38);			//Command to select 8 bit interface
 	LCDDelay();
 
 
-	WriteCommandLCD(0x08);			//Command to off cursor,display off
-	WriteCommandLCD(0x01);			//Command to Clear LCD
+	WriteCommand(0x08);			//Command to off cursor,display off
+	WriteCommand(0x01);			//Command to Clear LCD
 	LCDDelay1600();
-	WriteCommandLCD(0x06);			//Command for setting entry mode
+	WriteCommand(0x06);			//Command for setting entry mode
 
-	WriteCommandLCD(0x0f);			//Command to on cursor,blink cursor
-	WriteCommandLCD(0x02);			//Command return the cursor to home
+	WriteCommand(0x0f);			//Command to on cursor,blink cursor
+	WriteCommand(0x02);			//Command return the cursor to home
 	LCDDelay1600();
 
 }
 
 
 // Function to write a command to the LCD
-void WriteCommandLCD(unsigned char CommandByte)
+void WriteCommand(unsigned char CommandByte)
 {
      //Clear RS pin to write command
     GpioDataRegs.GPBCLEAR.bit.GPIO32 = 1;
@@ -72,7 +72,7 @@ void WriteCommandLCD(unsigned char CommandByte)
 // Send Databyte to the LCD
 void SendByte(unsigned char Value)
 {
-	unsigned char temp;
+	unsigned char var;
 
 	if((Value & 0x01) == 0x01)
 		  //Set D0 High;
@@ -133,7 +133,8 @@ void SendByte(unsigned char Value)
 
 //Set E pin to select LCD
 	 GpioDataRegs.GPBSET.bit.GPIO33 = 1;
-	for(temp=0;temp<5; temp++);
+	
+	for(var=0;var<5; var++);
 //Clear E pin to deselect LCD
 	GpioDataRegs.GPBCLEAR.bit.GPIO33 = 1;
 	LCDDelay();				            //Small delay
@@ -141,7 +142,7 @@ void SendByte(unsigned char Value)
 }
 
 //Write a data byte to LCD
-void WriteDataLCD(unsigned char DataByte)
+void WriteData(unsigned char DataByte)
 {
 //Set RS pin to write data
     GpioDataRegs.GPBSET.bit.GPIO32 = 1;
@@ -164,39 +165,39 @@ void LCDDelay1600(void)
 
 
 //Show
-void CursorON(void)
+void LCD_Cursor_ON(void)
 {
-	WriteCommandLCD(0x0f);			//Command to switch on cursor
+	WriteCommand(0x0f);			//Command to switch on cursor
 }
 
 
 
 //Hide cursor
-void CursorOFF(void)
+void LCD_Cursor_OFF(void)
 {
-	WriteCommandLCD(0x0c);			//Command to switch off cursor
+	WriteCommand(0x0c);			//Command to switch off cursor
 }
 
 
-/* Displays a Data on LCD */
-void DisplayLCD(char LineNumber,char *Data)
+// Displays data
+void Display_LCD(char LineNumber,char *Data)
 {
     int a ,c = 0;
 	if(LineNumber ==1)
 	{	//First Line
-		WriteCommandLCD(0x80);		//Select the first line
+		WriteCommand(0x80);		//Select the first line
 	}
 	else if(LineNumber ==2)
 	{	//Second line
-		WriteCommandLCD(0xc0);		//Select the second line
+		WriteCommand(0xc0);		//Select the second line
 	}
 	else if(LineNumber ==3)
 	    {   //third line
-	        WriteCommandLCD(0x94);      //Select the third line
+	        WriteCommand(0x94);      //Select the third line
 	    }
 	else if(LineNumber ==4)
 	        {   //fourth line
-	            WriteCommandLCD(0xD4);      //Select the fourth line
+	            WriteCommand(0xD4);      //Select the fourth line
 	        }
 	while(*Data != '\0')
 	{c++;
@@ -205,12 +206,12 @@ void DisplayLCD(char LineNumber,char *Data)
 
 	for(a=0;a<=c;a++)               //Value of a can be incremented if there are more characters to display on lcd
 	{
-		WriteDataLCD(*Data);		//Display a character
+		WriteData(*Data);		//Display a character
 		Data++;                  //Increment pointer
 	}
 	for(a=c+1;a<=20;a++)
 	{
-	    WriteDataLCD(' ');
+	    WriteData(' ');
 	}
 
 	return;
