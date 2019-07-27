@@ -11,12 +11,12 @@ void main(void)
 
     void WDogDisable(void);
     DeviceInit();
-	InitializeLCD();
+	Initialize();
 	DELAY_US(500);
-	DisplayLCD(1,"Karan");
-	DisplayLCD(2,"Tank");
-	DisplayLCD(3,"Git");
-	DisplayLCD(4,"Hub");
+	Display_LCD(1,"Karan");
+	Display_LCD(2,"Tank");
+	Display_LCD(3,"Git");
+	Display_LCD(4,"Hub");
 
     while(1);  //Stay here
 
