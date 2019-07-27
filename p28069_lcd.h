@@ -5,12 +5,12 @@
 #ifndef LCD_H_
 #define LCD_H_
 
-void CursorON(void);							  // Make Cursor visible
-void CursorOFF(void);							  // Hide cursor
-void DisplayLCD(char LineNumber,char *Data);	  // Display the given message
-void WriteCommandLCD(unsigned char CommandByte);  // Write the given command
-void WriteDataLCD(unsigned char DataByte);		  // Write the given data
-void InitializeLCD(void);						  // Initialize LCD
+void LCD_Cursor_ON(void);							  // Make Cursor visible
+void LCD_Cursor_OFF(void);							  // Hide cursor
+void Display_LCD(char LineNumber,char *Data);	  // Display the given message
+void WriteCommand(unsigned char CommandByte);  // Write the given command
+void WriteData(unsigned char DataByte);		  // Write the given data
+void Initialize(void);						  // Initialize LCD
 
 #endif
 
